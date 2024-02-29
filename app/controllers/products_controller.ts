@@ -12,9 +12,7 @@ export default class ProductsController {
    * Display a list of resource
    */
   async index({}: HttpContext) {
-    return {
-      message: 'Show all products!',
-    }
+    return this.productService.all()
   }
 
   /**
