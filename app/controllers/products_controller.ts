@@ -1,5 +1,6 @@
 import Product from '#models/product'
 import ProductsService from '#services/products_service'
+import { createProductValidator } from '#validators/post'
 import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
 
@@ -20,7 +21,8 @@ export default class ProductsController {
    * Handle form submission for the create action
    */
   async store({ request, response }: HttpContext) {
-    const body = request.body()
+    const data = request.all()
+    const body = await createProductValidator.validate(data)
 
     try {
       this.productService.create(body as Product)
