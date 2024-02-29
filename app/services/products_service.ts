@@ -22,4 +22,10 @@ export default class ProductsService {
       data: products,
     }
   }
+
+  async show(productId: number) {
+    const product = await Product.findOrFail(productId)
+
+    return product
+  }
 }

@@ -1,6 +1,6 @@
 import Product from '#models/product'
 import ProductsService from '#services/products_service'
-import { createProductValidator } from '#validators/post'
+import { createProductValidator } from '#validators/product'
 import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
 
@@ -34,9 +34,7 @@ export default class ProductsController {
    * Show individual record
    */
   async show({ params }: HttpContext) {
-    return {
-      message: `Showing ${params.id} product!`,
-    }
+    return this.productService.show(params.id)
   }
 
   /**
