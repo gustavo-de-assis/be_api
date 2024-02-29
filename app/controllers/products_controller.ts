@@ -1,21 +1,32 @@
+import Product from '#models/product'
+import ProductsService from '#services/products_service'
+import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
 
+@inject()
 export default class ProductsController {
+  constructor(protected productService: ProductsService) {}
+
   /**
    * Display a list of resource
    */
   async index({}: HttpContext) {
     return {
-      message: 'Showing all products!',
+      message: 'Show all products!',
     }
   }
 
   /**
    * Handle form submission for the create action
    */
-  async store({ request }: HttpContext) {
-    return {
-      message: 'Created!',
+  async store({ request, response }: HttpContext) {
+    const body = request.body()
+
+    try {
+      this.productService.create(body as Product)
+      response.status(201)
+    } catch (error) {
+      response.status(422)
     }
   }
 
