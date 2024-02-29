@@ -8,6 +8,7 @@
 */
 
 import router from '@adonisjs/core/services/router'
+import ProductsController from '#controllers/products_controller'
 
 router
   .group(() => {
@@ -16,5 +17,7 @@ router
         hello: 'world',
       }
     })
+
+    router.resource('/products', ProductsController).apiOnly()
   })
   .prefix('/api')
