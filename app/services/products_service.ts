@@ -6,17 +6,10 @@ export default class ProductsService {
   }
 
   async all() {
-    const products = await Product.all()
-
-    products.sort(function (a, b) {
-      if (a.name < b.name) {
-        return -1
-      }
-      if (a.name > b.name) {
-        return 1
-      }
-      return 0
-    })
+    const products = await Product.query()
+      .select('name', 'price')
+      .where('is_deleted', 0)
+      .orderBy('name')
 
     return {
       data: products,
@@ -24,7 +17,7 @@ export default class ProductsService {
   }
 
   async show(productId: number) {
-    const product = await Product.findOrFail(productId)
+    const product = await Product.query().select('name', 'price').where('id', productId)
 
     return product
   }
