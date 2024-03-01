@@ -6,8 +6,7 @@ export default class ClientsService {
   }
 
   async all() {
-    const clients = await Client.all()
-
+    const clients = await Client.query().select('name', 'cpf').orderBy('id')
     return {
       data: clients,
     }
