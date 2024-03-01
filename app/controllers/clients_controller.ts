@@ -12,9 +12,7 @@ export default class ClientsController {
    * Display a list of resource
    */
   async index({}: HttpContext) {
-    return {
-      message: 'Show all clients!',
-    }
+    return this.clientsService.all()
   }
 
   /**

@@ -5,7 +5,13 @@ export default class ClientsService {
     Client.create(body)
   }
 
-  async all() {}
+  async all() {
+    const clients = await Client.all()
+
+    return {
+      data: clients,
+    }
+  }
 
   async show() {}
 
