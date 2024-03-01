@@ -1,7 +1,9 @@
 import Client from '#models/client'
 
 export default class ClientsService {
-  async create() {}
+  async create(body: Client) {
+    Client.create(body)
+  }
 
   async all() {}
 

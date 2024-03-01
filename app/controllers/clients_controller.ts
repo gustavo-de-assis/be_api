@@ -1,4 +1,6 @@
+import Client from '#models/client'
 import ClientsService from '#services/clients_service'
+import { createClientValidator } from '#validators/client'
 import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
 
@@ -18,9 +20,15 @@ export default class ClientsController {
   /**
    * Handle form submission for the create action
    */
-  async store({ request }: HttpContext) {
-    return {
-      message: 'Create client!',
+  async store({ request, response }: HttpContext) {
+    const data = request.all()
+    const body = await createClientValidator.validate(data)
+
+    try {
+      this.clientsService.create(body as Client)
+      response.status(201)
+    } catch (error) {
+      response.status(422)
     }
   }
 
