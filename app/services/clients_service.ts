@@ -12,7 +12,11 @@ export default class ClientsService {
     }
   }
 
-  async show() {}
+  async show(productId: number) {
+    const client = await Client.query().select('name', 'cpf').where('id', productId)
+
+    return client
+  }
 
   async update() {}
 

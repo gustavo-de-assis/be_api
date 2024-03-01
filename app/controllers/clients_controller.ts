@@ -34,11 +34,8 @@ export default class ClientsController {
    * Show individual record
    */
   async show({ params }: HttpContext) {
-    return {
-      message: `Show client ${params.id}!`,
-    }
+    return this.clientsService.show(params.id)
   }
-
   /**
    * Handle form submission for the edit action
    */
