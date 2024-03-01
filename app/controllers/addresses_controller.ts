@@ -1,29 +1,37 @@
-import Client from '#models/client'
-import ClientsService from '#services/clients_service'
-import { createClientValidator } from '#validators/client'
+import Address from '#models/address'
+import AddressesService from '#services/address_service'
+import { createAddressValidator } from '#validators/address'
 import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
 
 @inject()
-export default class ClientsController {
-  constructor(protected clientsService: ClientsService) {}
+export default class AddressesController {
+  constructor(protected addressesService: AddressesService) {}
 
   /**
    * Display a list of resource
    */
   async index({}: HttpContext) {
-    return this.clientsService.all()
+    return this.addressesService.all()
   }
 
   /**
    * Handle form submission for the create action
    */
   async store({ request, response }: HttpContext) {
-    const data = request.only(['name', 'cpf'])
-    const body = await createClientValidator.validate(data)
+    const data = request.only([
+      'street',
+      'house_number',
+      'district',
+      'city',
+      'state',
+      'country',
+      'zip_code',
+    ])
+    const body = await createAddressValidator.validate(data)
 
     try {
-      this.clientsService.create(body as Client)
+      this.addressesService.create(body as Address)
       response.status(201)
     } catch (error) {
       response.status(422)
@@ -34,15 +42,14 @@ export default class ClientsController {
    * Show individual record
    */
   async show({ params }: HttpContext) {
-    return this.clientsService.show(params.id)
+    return this.addressesService.show(params.id)
   }
   /**
    * Handle form submission for the edit action
    */
   async update({ params, request }: HttpContext) {
-    const data = request.all()
-    const body = (await createClientValidator.validate(data)) as Client
-    return this.clientsService.update(params.id, body)
+    const body = request.body() as Address
+    return this.addressesService.update(params.id, body)
   }
 
   /**
