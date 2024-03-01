@@ -40,9 +40,9 @@ export default class ClientsController {
    * Handle form submission for the edit action
    */
   async update({ params, request }: HttpContext) {
-    return {
-      message: `Update client ${params.id}!`,
-    }
+    const data = request.all()
+    const body = (await createClientValidator.validate(data)) as Client
+    return this.clientsService.update(params.id, body)
   }
 
   /**

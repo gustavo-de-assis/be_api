@@ -12,13 +12,20 @@ export default class ClientsService {
     }
   }
 
-  async show(productId: number) {
-    const client = await Client.query().select('name', 'cpf').where('id', productId)
+  async show(clientId: number) {
+    const client = await Client.query().select('name', 'cpf').where('id', clientId)
 
     return client
   }
 
-  async update() {}
+  async update(clientId: number, body: Client) {
+    const client = await Client.findOrFail(clientId)
+
+    client.name = body.name
+    client.cpf = body.cpf
+
+    await client.save()
+  }
 
   async delete() {}
 }
