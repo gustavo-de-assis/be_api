@@ -28,4 +28,13 @@ export default class ProductsService {
 
     return product
   }
+
+  async update(productId: number, body: Product) {
+    const product = await Product.findOrFail(productId)
+
+    product.name = body.name
+    product.price = body.price
+
+    await product.save()
+  }
 }

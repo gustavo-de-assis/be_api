@@ -19,4 +19,8 @@ export default class Product extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
+
+  static get visible() {
+    return ['name', 'price']
+  }
 }

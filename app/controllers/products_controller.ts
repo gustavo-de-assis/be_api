@@ -41,10 +41,9 @@ export default class ProductsController {
    * Handle form submission for the edit action
    */
   async update({ params, request }: HttpContext) {
-    return {
-      message: `Updating ${params.id} product with new data`,
-      data: request,
-    }
+    const data = request.all()
+    const body = (await createProductValidator.validate(data)) as Product
+    return this.productService.update(params.id, body)
   }
 
   /**
