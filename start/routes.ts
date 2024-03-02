@@ -11,6 +11,7 @@ import router from '@adonisjs/core/services/router'
 import ClientsController from '#controllers/clients_controller'
 import AddressesController from '#controllers/addresses_controller'
 import ProductsController from '#controllers/products_controller'
+import SalesController from '#controllers/sales_controller'
 
 router
   .group(() => {
@@ -23,5 +24,6 @@ router
     router.resource('/address', AddressesController).apiOnly()
 
     router.resource('/products', ProductsController).apiOnly()
+    router.post('/clients/:clientId/sale', [SalesController, 'store'])
   })
   .prefix('/api')
