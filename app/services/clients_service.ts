@@ -1,4 +1,5 @@
 import Client from '#models/client'
+import Sale from '#models/sale'
 
 export default class ClientsService {
   async create(body: Client) {
@@ -7,15 +8,25 @@ export default class ClientsService {
 
   async all() {
     const clients = await Client.query().select('name', 'cpf').orderBy('id')
+
     return {
       data: clients,
     }
   }
 
   async show(clientId: number) {
-    const client = await Client.query().select('name', 'cpf').where('id', clientId)
+    const client = await Client.query().select('cpf', 'name').where('id', clientId)
+    const sales = await Sale.query()
+      .select('total_price')
+      .where('client_id', clientId)
+      .orderBy('createdAt')
 
-    return client
+    return {
+      data: {
+        client,
+        sales,
+      },
+    }
   }
 
   async update(clientId: number, body: Client) {

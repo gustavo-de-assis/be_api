@@ -5,6 +5,9 @@ import type { HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 import Sale from './sale.js'
 
 export default class Client extends BaseModel {
+  @hasMany(() => Sale)
+  declare sales: HasMany<typeof Sale>
+
   @column({ isPrimary: true })
   declare id: number
 
@@ -19,11 +22,6 @@ export default class Client extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
-
-  @hasMany(() => Sale, {
-    foreignKey: 'clientId',
-  })
-  declare sales: HasMany<typeof Sale>
 
   @manyToMany(() => Address, {
     pivotTable: 'address_client',

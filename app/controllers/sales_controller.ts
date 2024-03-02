@@ -12,11 +12,11 @@ export default class SalesController {
    */
   async store({ params, request, response }: HttpContext) {
     const body = request.body()
-    const clientId = params.clientId
+    const clientId = params.id
 
     await Client.findOrFail(clientId)
 
-    body.client_id = clientId
+    body.clientId = clientId
 
     const sale = await Sale.create(body)
 
