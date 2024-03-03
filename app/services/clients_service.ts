@@ -1,4 +1,5 @@
 import Client from '#models/client'
+import Product from '#models/product'
 import Sale from '#models/sale'
 
 export default class ClientsService {
@@ -16,11 +17,27 @@ export default class ClientsService {
 
   async show(clientId: number) {
     const client = await Client.query().select('cpf', 'name').where('id', clientId)
+    /* 
     const sales = await Sale.query()
-      .select('total_price')
+      .select('quantity', 'total_price')
       .where('client_id', clientId)
-      .orderBy('createdAt')
+      .with('product', (builder) => {
+        builder.select('name', 'price').where('id', 'product_id')
+      })
+      .orderBy('createdAt') */
 
+    const sales = await Sale.query()
+      .select(
+        'products.name as name',
+        'products.price as price',
+        'sales.quantity',
+        'sales.total_price'
+      )
+      .innerJoin('products', 'sales.product_id', 'products.id')
+      .where('sales.client_id', clientId)
+      .orderBy('sales.created_at')
+
+    console.log(sales)
     return {
       data: {
         client,

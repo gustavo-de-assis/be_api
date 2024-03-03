@@ -24,4 +24,9 @@ export default class Sale extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
+
+  serializeExtras = true
+
+  @belongsTo(() => Product)
+  declare product: BelongsTo<typeof Product>
 }
