@@ -38,5 +38,13 @@ export default class ClientsService {
     await client.save()
   }
 
-  async delete() {}
+  async delete(clientId: number) {
+    const client = await Client.findOrFail(clientId)
+
+    await client.delete()
+
+    return {
+      message: 'Cliente excluido com sucesso!',
+    }
+  }
 }

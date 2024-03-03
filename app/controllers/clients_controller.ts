@@ -49,8 +49,6 @@ export default class ClientsController {
    * Delete record
    */
   async destroy({ params }: HttpContext) {
-    return {
-      message: `Delete client ${params.id}!`,
-    }
+    return this.clientsService.delete(params.id)
   }
 }
