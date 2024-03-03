@@ -1,8 +1,12 @@
 import Address from '#models/address'
+import Client from '#models/client'
 
 export default class AddressesService {
-  async create(body: Address) {
-    Address.create(body)
+  async create(body: Address, clientId: number) {
+    const client = await Client.findOrFail(clientId)
+    const address = await Address.create(body)
+
+    await client.related('addresses').attach([address.id])
   }
 
   async all() {

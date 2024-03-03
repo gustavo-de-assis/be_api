@@ -18,7 +18,7 @@ export default class AddressesController {
   /**
    * Handle form submission for the create action
    */
-  async store({ request, response }: HttpContext) {
+  async store({ params, request, response }: HttpContext) {
     const data = request.only([
       'street',
       'house_number',
@@ -31,7 +31,7 @@ export default class AddressesController {
     const body = await createAddressValidator.validate(data)
 
     try {
-      this.addressesService.create(body as Address)
+      this.addressesService.create(body as Address, params.id)
       response.status(201)
     } catch (error) {
       response.status(422)
