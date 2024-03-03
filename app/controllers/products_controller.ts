@@ -47,11 +47,9 @@ export default class ProductsController {
   }
 
   /**
-   * Delete record
+   * Soft delete record
    */
-  async destroy({ params }: HttpContext) {
-    return {
-      message: `Destroying ${params.id} product!`,
-    }
+  async softDelete({ params }: HttpContext) {
+    return this.productService.softDelete(params.id)
   }
 }

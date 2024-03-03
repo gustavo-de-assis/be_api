@@ -30,4 +30,16 @@ export default class ProductsService {
 
     await product.save()
   }
+
+  async softDelete(productId: number) {
+    const product = await Product.findOrFail(productId)
+
+    product.is_deleted = true
+
+    await product.save()
+
+    return {
+      message: 'Produto excluido com sucesso!',
+    }
+  }
 }

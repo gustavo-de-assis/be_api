@@ -19,5 +19,6 @@ router
     })
 
     router.resource('/products', ProductsController).apiOnly()
+    router.put('/products/:id/softDelete', [ProductsController, 'softDelete'])
   })
   .prefix('/api')
