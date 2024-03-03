@@ -1,29 +1,29 @@
-import Client from '#models/client'
-import ClientsService from '#services/clients_service'
-import { createClientValidator } from '#validators/client'
+import Product from '#models/product'
+import ProductsService from '#services/products_service'
+import { createProductValidator } from '#validators/product'
 import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
 
 @inject()
-export default class ClientsController {
-  constructor(protected clientsService: ClientsService) {}
+export default class ProductsController {
+  constructor(protected productService: ProductsService) {}
 
   /**
    * Display a list of resource
    */
   async index({}: HttpContext) {
-    return this.clientsService.all()
+    return this.productService.all()
   }
 
   /**
    * Handle form submission for the create action
    */
   async store({ request, response }: HttpContext) {
-    const data = request.only(['name', 'cpf'])
-    const body = await createClientValidator.validate(data)
+    const data = request.all()
+    const body = await createProductValidator.validate(data)
 
     try {
-      this.clientsService.create(body as Client)
+      this.productService.create(body as Product)
       response.status(201)
     } catch (error) {
       response.status(422)
@@ -34,21 +34,24 @@ export default class ClientsController {
    * Show individual record
    */
   async show({ params }: HttpContext) {
-    return this.clientsService.show(params.id)
+    return this.productService.show(params.id)
   }
+
   /**
    * Handle form submission for the edit action
    */
   async update({ params, request }: HttpContext) {
     const data = request.all()
-    const body = (await createClientValidator.validate(data)) as Client
-    return this.clientsService.update(params.id, body)
+    const body = (await createProductValidator.validate(data)) as Product
+    return this.productService.update(params.id, body)
   }
 
   /**
    * Delete record
    */
   async destroy({ params }: HttpContext) {
-    return this.clientsService.delete(params.id)
+    return {
+      message: `Destroying ${params.id} product!`,
+    }
   }
 }
