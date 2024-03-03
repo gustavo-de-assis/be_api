@@ -21,11 +21,9 @@ router
       }
     })
     router.resource('/clients', ClientsController).apiOnly()
-    router.post('clients/sale', [SalesController, 'store'])
     router.resource('/address', AddressesController).apiOnly()
-
     router.resource('/products', ProductsController).apiOnly()
-    router.resource('/address/', AddressesController).apiOnly()
+    router.post('clients/sale', [SalesController, 'store'])
     router.post('/address/:id', [AddressesController, 'store'])
   })
   .prefix('/api')

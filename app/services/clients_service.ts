@@ -1,5 +1,5 @@
+import Address from '#models/address'
 import Client from '#models/client'
-import Product from '#models/product'
 import Sale from '#models/sale'
 
 export default class ClientsService {
@@ -17,14 +17,11 @@ export default class ClientsService {
 
   async show(clientId: number) {
     const client = await Client.query().select('cpf', 'name').where('id', clientId)
-    /* 
-    const sales = await Sale.query()
-      .select('quantity', 'total_price')
-      .where('client_id', clientId)
-      .with('product', (builder) => {
-        builder.select('name', 'price').where('id', 'product_id')
-      })
-      .orderBy('createdAt') */
+
+    const addresses = await Address.query()
+      .select('addresses.*')
+      .innerJoin('address_client as ac', 'addresses.id', 'ac.address_id')
+      .innerJoin('clients', 'ac.client_id', 'clients.id')
 
     const sales = await Sale.query()
       .select(
@@ -37,10 +34,10 @@ export default class ClientsService {
       .where('sales.client_id', clientId)
       .orderBy('sales.created_at')
 
-    console.log(sales)
     return {
       data: {
         client,
+        addresses,
         sales,
       },
     }
