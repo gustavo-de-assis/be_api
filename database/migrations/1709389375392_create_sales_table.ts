@@ -7,6 +7,8 @@ export default class extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table.integer('client_id').unsigned().references('clients.id').onDelete('cascade')
+      table.integer('product_id').unsigned().references('products.id')
+      table.integer('quantity')
       table.integer('total_price')
       table.timestamp('created_at')
       table.timestamp('updated_at')
