@@ -17,14 +17,15 @@ import { middleware } from './kernel.js'
 
 router
   .group(() => {
+    router.resource('/products', ProductsController).apiOnly()
     router.post('/user', [UsersController, 'store'])
-    router.get('/user', [UsersController, 'index'])
     router.post('/login', [UsersController, 'login'])
     router
       .group(() => {
         router.resource('/clients', ClientsController).apiOnly()
         router.resource('/address', AddressesController).apiOnly()
         router.resource('/products', ProductsController).apiOnly()
+        router.put('/products/:id/softDelete', [ProductsController, 'softDelete'])
         router.post('clients/sale', [SalesController, 'store'])
         router.post('/address/:id', [AddressesController, 'store'])
       })
