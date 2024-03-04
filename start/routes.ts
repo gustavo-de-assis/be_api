@@ -13,16 +13,21 @@ import AddressesController from '#controllers/addresses_controller'
 import ProductsController from '#controllers/products_controller'
 import SalesController from '#controllers/sales_controller'
 import UsersController from '#controllers/users_controller'
+import { middleware } from './kernel.js'
 
 router
   .group(() => {
     router.post('/user', [UsersController, 'store'])
     router.get('/user', [UsersController, 'index'])
     router.post('/login', [UsersController, 'login'])
-    router.resource('/clients', ClientsController).apiOnly()
-    router.resource('/address', AddressesController).apiOnly()
-    router.resource('/products', ProductsController).apiOnly()
-    router.post('clients/sale', [SalesController, 'store'])
-    router.post('/address/:id', [AddressesController, 'store'])
+    router
+      .group(() => {
+        router.resource('/clients', ClientsController).apiOnly()
+        router.resource('/address', AddressesController).apiOnly()
+        router.resource('/products', ProductsController).apiOnly()
+        router.post('clients/sale', [SalesController, 'store'])
+        router.post('/address/:id', [AddressesController, 'store'])
+      })
+      .use(middleware.auth())
   })
   .prefix('/api')
