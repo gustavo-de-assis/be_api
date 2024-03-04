@@ -2,7 +2,7 @@ import User from '#models/user'
 import auth from '@adonisjs/auth/services/main'
 import type { HttpContext } from '@adonisjs/core/http'
 import hash from '@adonisjs/core/services/hash'
-
+import jwt from 'jsonwebtoken'
 export default class UsersController {
   /**
    * Handle form submission for the create action
@@ -31,8 +31,12 @@ export default class UsersController {
         response.abort('Invalid Credentials!')
       } else {
         await hash.verify(user.password, password)
-        const login = await User.verifyCredentials(email, password)
       }
+      await User.verifyCredentials(email, password)
+
+      const token = jwt.sign({ user }, process.env.JWT_SECRET)
+
+      return token
     } catch (error) {
       return response.status(500).send({ error: error })
     }
